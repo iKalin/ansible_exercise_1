@@ -1,0 +1,20 @@
+---
+- hosts: centos2
+  remote_user: tester
+  sudo: yes 
+  tasks:
+
+        - name: firewall_disable_everything
+          firewalld:
+                service: "*"
+                state: disabled
+        - name: firewalld_test
+          firewalld:
+                service: ssh
+                permanent: yes
+                state: enabled
+
+    #    - name: firewalld_disable
+    #      firewalld:
+    #            port: */tcp
+    #            state: disabled

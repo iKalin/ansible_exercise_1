@@ -1,0 +1,9 @@
+---
+- hosts: aws
+  become: yes
+  gather_facts: false
+  roles:
+    - initial
+    - software
+    - nginx
+    - jenkins

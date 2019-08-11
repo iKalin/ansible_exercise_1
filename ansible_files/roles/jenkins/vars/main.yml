@@ -1,0 +1,3 @@
+---
+# vars file for jenkins
+:ansible_ssh_user: worker

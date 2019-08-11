@@ -1,0 +1,28 @@
+---
+- name: Remove Repos
+  hosts: centos2
+  ignore_errors: yes
+  become: yes
+  tasks:
+
+        - command: rpm -qf /etc/yum.repos.d/epel.repo
+          register: epel_release
+
+        - command: rpm -qf /etc/yum.repos.d/remi.repo
+          register: remi_release
+
+    #    - name: Remove epel
+     #     yum_repository:
+      #          name: "{{ epel_release.stdout }}"
+       #         state: absent
+
+   #     - name: Remove remi
+    #      yum_repository:
+     #           name: "{{ remi_release.stdout }}"
+      #          state: absent
+
+        - name: Remove remi with rpm
+          command: rpm -e {{ remi_release.stdout }}
+
+        - name: Remove epel with rpm
+          command: rpm -e {{ epel_release.stdout }}

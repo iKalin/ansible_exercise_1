@@ -1,0 +1,70 @@
+---
+# tasks file for jenkins
+- name: Install Openjdk
+  yum:
+    name: java-1.8.0-openjdk
+    state: present
+
+- name: Download jenkins.repo
+  get_url:
+    url: http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
+    dest: /etc/yum.repos.d/jenkins.repo
+
+- name: Import jenkins key
+  rpm_key:
+    state: present
+    key: https://jenkins-ci.org/redhat/jenkins-ci.org.key
+
+- name: Install jenkins
+  yum:
+    name: jenkins
+    state: present
+
+- name: Start jenkins
+  systemd:
+    name: jenkins
+    state: started
+
+- name: enable jenkins
+  systemd:
+    name: jenkins
+    enabled: true
+
+- name: sleep for 30 seconds
+  wait_for: timeout=30
+
+- name: Copy Nginx Config for reverse Proxy
+  copy:
+      src: nginx.conf
+      dest: /etc/nginx/
+      force: yes
+
+- name: Copy the nginx config file and restart nginx
+  copy:
+        src: jenkins.conf
+        dest: /etc/nginx/conf.d/jenkins.conf
+
+- name: Restart nginx
+  service:
+        name: nginx
+        state: restarted
+
+- name: Init password jenkin
+  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+  changed_when: false
+  register: result
+
+#- name: Enable port 80
+#  firewalld:
+#    port: 80/tcp
+#    permanent: true
+#    state: enabled
+
+#- name: Restart Firewalld
+#  systemd:
+#    name: firewalld
+#    state: restarted
+
+- name: Print init password jenkins
+  debug:
+    var: result.stdout

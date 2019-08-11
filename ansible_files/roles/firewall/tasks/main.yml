@@ -1,0 +1,29 @@
+---
+# tasks file for firewall
+- name: firewall_disable_everything
+  firewalld:
+      service: "*"
+      state: disabled
+                
+- name: firewalld_test
+  firewalld:
+      service: ssh
+      permanent: yes
+      state: enabled
+
+#- name: Enable Nginx
+#  firewalld:
+#    service: nginx
+#    permanent: yes
+#    state: enabled
+
+- name: Enable port 80
+  firewalld:
+    port: 80/tcp
+    permanent: true
+    state: enabled
+
+- name: Restart Firewalld
+  systemd:
+    name: firewalld
+    state: restarted

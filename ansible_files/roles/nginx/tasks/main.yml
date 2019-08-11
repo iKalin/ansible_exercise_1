@@ -1,0 +1,12 @@
+---
+# tasks file for nginx
+- name: Install NginX
+  yum: name=nginx state=latest
+  
+- name: Start Nginx
+  service:
+          name: nginx
+          state: started
+#- name: Add SELinux Context
+#  command: /usr/sbin/setsebool httpd_can_network_connect true
+

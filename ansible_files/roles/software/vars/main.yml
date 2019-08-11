@@ -1,0 +1,5 @@
+---
+# vars file for software
+sys_packages: ['wget','curl', 'git', 'vim', 'nano', 'net-tools','zsh','util-linux-user.x86_64']
+ansible_ssh_user: worker
+username: worker
